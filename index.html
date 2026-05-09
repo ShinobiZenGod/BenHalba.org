@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benjamin Halba · IT Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --paper: #f5f0e8;
+  --paper2: #ede8df;
+  --paper3: #e3ddd2;
+  --ink: #1a1714;
+  --ink2: #3d3730;
+  --ink3: #6b6358;
+  --amber: #e07b1a;
+  --amber-light: #f5a94a;
+  --amber-pale: rgba(224,123,26,0.10);
+  --amber-border: rgba(224,123,26,0.25);
+  --red: #c0392b;
+  --green-status: #2e7d4f;
+  --border: rgba(26,23,20,0.10);
+  --border-strong: rgba(26,23,20,0.18);
+  --radius: 4px;
+  --contact-bg: var(--ink);
+  --contact-color: var(--paper);
+}
+
+/* ── DARK MODE VARIABLES ── */
+html[data-theme="dark"] {
+  --paper: #141210;
+  --paper2: #1c1917;
+  --paper3: #242018;
+  --ink: #f0ebe2;
+  --ink2: #c9c2b8;
+  --ink3: #8c8278;
+  --border: rgba(240,235,226,0.08);
+  --border-strong: rgba(240,235,226,0.14);
+  --contact-bg: #0e0c0a;
+  --contact-color: #f0ebe2;
+}
+
+/* ── THEME TRANSITION ── */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+/* Don't animate transforms — would break hover lifts */
+.btn, .pill, .linkedin-mark { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.25s ease, transform 0.2s ease; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--paper);
+  border-bottom: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  height: 56px;
+}
+
+.nav-wordmark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+.nav-wordmark em {
+  color: var(--amber);
+  font-style: normal;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  text-decoration: none;
+  color: var(--ink3);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--amber); }
+
+/* ── THEME TOGGLE ── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 100px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.theme-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
+  background: transparent;
+  color: var(--ink3);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.theme-btn:hover { color: var(--amber); }
+
+.theme-btn.active {
+  background: var(--amber);
+  color: #fff;
+}
+
+.theme-btn svg {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+/* ── AVAILABILITY BADGE in nav ── */
+#avail-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 100px;
+  border: 1px solid;
+  transition: all 0.3s;
+  cursor: pointer;
+  background: none;
+  font-family: 'DM Mono', monospace;
+}
+
+.dot-status {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+#avail-badge.unavailable {
+  border-color: rgba(192,57,43,0.3);
+  color: var(--red);
+}
+#avail-badge.unavailable .dot-status {
+  background: var(--red);
+  box-shadow: 0 0 0 2px rgba(192,57,43,0.2);
+}
+
+#avail-badge.available {
+  border-color: rgba(46,125,79,0.3);
+  color: var(--green-status);
+}
+#avail-badge.available .dot-status {
+  background: var(--green-status);
+  box-shadow: 0 0 0 2px rgba(46,125,79,0.2);
+  animation: pulse-green 1.8s ease infinite;
+}
+
+@keyframes pulse-green {
+  0%,100% { box-shadow: 0 0 0 2px rgba(46,125,79,0.2); }
+  50% { box-shadow: 0 0 0 5px rgba(46,125,79,0.05); }
+}
+
+/* ── HERO H1 WORD ANIMATIONS ── */
+.h1-word {
+  display: inline-block;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Default (pre-scroll) positions */
+.h1-systems { transform: translateX(-60px); }
+.h1-that    { transform: translateX(60px); }
+.h1-work    { transform: translateY(50px) scale(0.92); }
+
+/* Animated-in state */
+.hero-h1.animated .h1-systems {
+  animation: slideInLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
+}
+.hero-h1.animated .h1-that {
+  animation: slideInRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+.hero-h1.animated .h1-work {
+  animation: popUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.38s forwards;
+}
+
+@keyframes slideInLeft {
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInRight {
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes popUp {
+  0%   { opacity: 0; transform: translateY(50px) scale(0.92); }
+  70%  { opacity: 1; transform: translateY(-6px) scale(1.03); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── HERO ── */
+#hero {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 0;
+  min-height: calc(100vh - 56px);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 3rem 4rem;
+  align-items: center;
+}
+
+.hero-left {}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--amber);
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--amber);
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4.5rem, 10vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  margin-bottom: 2rem;
+}
+
+h1 .stroke {
+  -webkit-text-stroke: 1.5px var(--ink2);
+  color: transparent;
+}
+h1 .amber { color: var(--amber); }
+
+.hero-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--ink3);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.6rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  display: inline-block;
+}
+
+.btn-solid {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-solid:hover { background: var(--ink2); transform: translateY(-1px); box-shadow: 0 0 18px rgba(224,123,26,0.18), 0 4px 12px rgba(0,0,0,0.15); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink2);
+  border: 1px solid var(--border-strong);
+}
+.btn-outline:hover { border-color: var(--amber); color: var(--amber); box-shadow: 0 0 18px rgba(224,123,26,0.14), 0 4px 10px rgba(0,0,0,0.08); transform: translateY(-1px); }
+
+/* Hero right — info card */
+.hero-card {
+  background: var(--paper2);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 1.8rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.76rem;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+}
+.card-row:last-child { border-bottom: none; padding-bottom: 0; }
+.card-row:first-child { padding-top: 0; }
+
+.card-label { color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.65rem; }
+.card-val { color: var(--ink); text-align: right; line-height: 1.4; }
+.card-val .amber { color: var(--amber); }
+
+/* ── DIVIDER ── */
+.divider {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── SKILLS ── */
+#skills {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 3rem;
+}
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  margin-bottom: 3rem;
+}
+
+.skills-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 48px 200px 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.4rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--paper);
+  transition: background 0.2s;
+  cursor: default;
+}
+.skill-row:last-child { border-bottom: none; }
+.skill-row:hover { background: var(--amber-pale); }
+
+.skill-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink3);
+  letter-spacing: 0.05em;
+}
+
+.skill-name-block {}
+.skill-name-block strong {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.skill-name-block span {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.skill-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink3);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.skill-bar-wrap {
+  width: 100px;
+}
+.skill-bar-track {
+  height: 3px;
+  background: var(--border-strong);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.skill-bar-fill {
+  height: 100%;
+  background: var(--amber);
+  border-radius: 2px;
+  transform-origin: left;
+  animation: barGrow 1s ease forwards;
+  transform: scaleX(0);
+}
+@keyframes barGrow { to { transform: scaleX(1); } }
+.skill-bar-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--ink3);
+  margin-top: 4px;
+  text-align: right;
+}
+
+/* ── CERTS / TOOLS ── */
+#tools {
+  background: var(--paper2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 5rem 3rem;
+}
+
+.tools-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+
+.tool-group-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+}
+
+.tools-single { grid-template-columns: 1fr; }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+  border: 1px solid var(--border-strong);
+  background: var(--paper);
+  color: var(--ink2);
+  letter-spacing: 0.04em;
+  transition: all 0.2s, transform 0.2s, box-shadow 0.2s;
+  border-color: var(--amber-border);
+  background: var(--amber-pale);
+  color: var(--amber);
+  box-shadow: 0 0 12px rgba(224,123,26,0.15);
+  transform: translateY(-1px);
+}
+
+.pill.cert {
+  border-color: var(--amber-border);
+  background: var(--amber-pale);
+  color: var(--amber);
+}
+
+/* ── ABOUT ── */
+#about {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.about-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+}
+
+.about-text {
+  font-size: 0.95rem;
+  color: var(--ink3);
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.about-text strong { color: var(--ink); font-weight: 500; }
+
+.about-quote {
+  margin-top: 2rem;
+  padding: 1.2rem 1.5rem;
+  border-left: 3px solid var(--amber);
+  background: var(--amber-pale);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--ink2);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.values-list { list-style: none; }
+.values-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--ink3);
+  font-weight: 300;
+}
+.values-list li:last-child { border-bottom: none; }
+.values-list li::before {
+  content: '→';
+  color: var(--amber);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.values-list li strong { color: var(--ink); font-weight: 500; }
+
+/* ── CONTACT ── */
+#contact {
+  background: var(--contact-bg);
+  color: var(--contact-color);
+  padding: 6rem 3rem;
+}
+
+.contact-inner { max-width: 600px; margin: 0 auto; }
+
+.contact-super {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 1rem;
+}
+
+.contact-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 7vw, 5rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  margin-bottom: 1.2rem;
+  color: var(--contact-color);
+}
+
+.contact-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink3);
+  font-weight: 300;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+#contact-avail-note {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 2rem;
+  transition: all 0.3s;
+}
+#contact-avail-note.unavailable {
+  background: rgba(192,57,43,0.15);
+  color: #e07070;
+  border: 1px solid rgba(192,57,43,0.25);
+}
+#contact-avail-note.available {
+  background: rgba(46,125,79,0.15);
+  color: #5abe85;
+  border: 1px solid rgba(46,125,79,0.25);
+}
+
+.contact-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+.btn-light {
+  background: var(--paper);
+  color: var(--ink);
+}
+.btn-light:hover { background: var(--amber-light); transform: translateY(-1px); box-shadow: 0 0 20px rgba(224,123,26,0.25), 0 4px 12px rgba(0,0,0,0.12); }
+
+.btn-dark-outline {
+  background: transparent;
+  color: rgba(245,240,232,0.6);
+  border: 1px solid rgba(245,240,232,0.15);
+}
+.btn-dark-outline:hover { border-color: var(--amber); color: var(--amber); transform: translateY(-1px); box-shadow: 0 0 20px rgba(224,123,26,0.2), 0 4px 12px rgba(0,0,0,0.15); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--contact-bg);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 1.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(240,235,226,0.3);
+  letter-spacing: 0.06em;
+}
+
+
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── CONTACT FORM ── */
+#contact { text-align: left; }
+.contact-inner { max-width: 900px; }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 3rem;
+  margin-top: 2.5rem;
+  align-items: start;
+}
+
+.contact-form-wrap { display: flex; flex-direction: column; gap: 1.2rem; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+.form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.form-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(245,240,232,0.45);
+}
+
+.form-input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--paper);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  width: 100%;
+}
+.form-input::placeholder { color: rgba(245,240,232,0.25); }
+.form-input:focus {
+  border-color: var(--amber);
+  background: rgba(255,255,255,0.09);
+}
+
+.form-textarea { resize: vertical; min-height: 120px; }
+
+.btn-form-submit {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--radius);
+  background: var(--amber);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  align-self: flex-start;
+}
+.btn-form-submit:hover { background: var(--amber-light); transform: translateY(-1px); box-shadow: 0 0 22px rgba(224,123,26,0.35), 0 4px 14px rgba(0,0,0,0.12); }
+
+/* ── LINKEDIN MARK ── */
+.linkedin-mark-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.linkedin-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  border: 1.5px solid var(--amber-border);
+  background: transparent;
+  text-decoration: none;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.linkedin-mark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--amber-pale);
+  opacity: 0;
+  transition: opacity 0.25s;
+  border-radius: 8px;
+}
+.linkedin-mark:hover {
+  border-color: var(--amber);
+  box-shadow: 0 0 18px rgba(224,123,26,0.2), 0 0 4px rgba(224,123,26,0.15);
+  transform: translateY(-2px);
+}
+.linkedin-mark:hover::before { opacity: 1; }
+.linkedin-mark svg { position: relative; z-index: 1; }
+
+.linkedin-mark-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.linkedin-mark-text strong {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(245,240,232,0.85);
+}
+.linkedin-mark-text span {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--amber-light);
+  letter-spacing: 0.04em;
+}
+
+/* pill hover glow on dark bg */
+.contact-side-block:hover { background: rgba(255,255,255,0.03); }
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  min-height: 1.2rem;
+  transition: opacity 0.3s;
+}
+.form-feedback.success { color: #5abe85; }
+.form-feedback.error   { color: #e07070; }
+
+.contact-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.contact-side-block {
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.contact-side-block:last-child { border-bottom: none; }
+
+.contact-side-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--amber-light);
+  text-decoration: none;
+  word-break: break-all;
+  display: block;
+  margin-top: 0.2rem;
+  transition: color 0.2s;
+}
+.contact-side-link:hover { color: #fff; }
+
+.contact-side-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.6);
+  display: block;
+  margin-top: 0.2rem;
+}
+
+html[data-theme="dark"] h1 .stroke {
+  -webkit-text-stroke-color: rgba(240,235,226,0.2);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  #hero { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-card { display: none; }
+  #skills, #about, #contact { padding-left: 1.5rem; padding-right: 1.5rem; }
+  #tools { padding: 3rem 1.5rem; }
+  .tools-inner { grid-template-columns: 1fr; gap: 2rem; }
+  #about { grid-template-columns: 1fr; gap: 2rem; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-side { margin-top: 0.5rem; }
+  .skill-row { grid-template-columns: 40px 1fr; gap: 0.75rem; }
+  .skill-desc, .skill-bar-wrap { display: none; }
+  footer { padding: 1.5rem; flex-direction: column; gap: 0.4rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-wordmark">Benjamin<em>.</em>Halba</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="theme-toggle" id="theme-toggle">
+      <button class="theme-btn" id="btn-light" onclick="setTheme('light')" title="Light mode">
+        <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="2.5" fill="currentColor"/><line x1="6" y1="0.5" x2="6" y2="2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="10" x2="6" y2="11.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="0.5" y1="6" x2="2" y2="6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="10" y1="6" x2="11.5" y2="6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="1.9" y1="1.9" x2="2.95" y2="2.95" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="9.05" y1="9.05" x2="10.1" y2="10.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="10.1" y1="1.9" x2="9.05" y2="2.95" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="2.95" y1="9.05" x2="1.9" y2="10.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Light
+      </button>
+      <button class="theme-btn" id="btn-system" onclick="setTheme('system')" title="Match system">
+        <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="2" width="10" height="7" rx="1.2" stroke="currentColor" stroke-width="1.1"/><line x1="4" y1="10.5" x2="8" y2="10.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="9" x2="6" y2="10.5" stroke="currentColor" stroke-width="1.1"/></svg>
+        Auto
+      </button>
+      <button class="theme-btn" id="btn-dark" onclick="setTheme('dark')" title="Dark mode">
+        <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 7.5A5 5 0 0 1 4.5 2a5 5 0 1 0 5.5 5.5z" fill="currentColor"/></svg>
+        Dark
+      </button>
+    </div>
+    <div id="avail-badge" class="unavailable">
+      <span class="dot-status"></span>
+      <span id="avail-text">Not Available</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left reveal">
+    <div class="hero-eyebrow">Benjamin Halba · IT Professional · Christchurch, NZ</div>
+    <h1 class="hero-h1" id="hero-h1">
+      <span class="h1-word h1-systems">Systems</span><br>
+      <span class="h1-word h1-that stroke">That</span><br>
+      <span class="h1-word h1-work amber">Work.</span>
+    </h1>
+    <p class="hero-desc">
+      Keeping infrastructure running, users supported, and networks humming.
+      Specialised in Microsoft environments, cloud operations, and enterprise IT across every layer of the stack.
+    </p>
+    <div class="hero-cta">
+      <a href="#skills" class="btn btn-solid">View Skills</a>
+      <a href="#contact" class="btn btn-outline">Contact Me</a>
+    </div>
+  </div>
+
+  <div class="hero-card reveal">
+    <div class="card-row">
+      <span class="card-label">Location</span>
+      <span class="card-val">Christchurch, NZ</span>
+    </div>
+    <div class="card-row">
+      <span class="card-label">Focus</span>
+      <span class="card-val">Enterprise IT<br>& Infrastructure</span>
+    </div>
+    <div class="card-row">
+      <span class="card-label">Cloud</span>
+      <span class="card-val"><span class="amber">Microsoft Azure</span></span>
+    </div>
+    <div class="card-row">
+      <span class="card-label">Environment</span>
+      <span class="card-val">Windows Server<br>AD · Hyper-V</span>
+    </div>
+    <div class="card-row">
+      <span class="card-label">Networking</span>
+      <span class="card-val">LAN · WAN · DNS<br>Firewalls · VPN</span>
+    </div>
+    <div class="card-row">
+      <span class="card-label">Status</span>
+      <span class="card-val" id="hero-status-val" style="color:var(--red)">● Not Available</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <div class="section-label">01 — Expertise</div>
+    <div class="section-title">Core Skills</div>
+  </div>
+
+  <div class="skills-list reveal">
+
+    <div class="skill-row">
+      <div class="skill-num">01</div>
+      <div class="skill-name-block">
+        <strong>Microsoft Azure</strong>
+        <span>Cloud Platform</span>
+      </div>
+      <div class="skill-desc">Working knowledge of Azure AD, virtual machines, resource groups, and Azure DNS. Actively developing hands-on experience with IaaS and PaaS services across the Azure ecosystem.</div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:52%;animation-delay:0.1s"></div></div>
+        <div class="skill-bar-label">Developing</div>
+      </div>
+    </div>
+
+    <div class="skill-row">
+      <div class="skill-num">02</div>
+      <div class="skill-name-block">
+        <strong>Windows Server</strong>
+        <span>On-Premise Infra</span>
+      </div>
+      <div class="skill-desc">Solid working knowledge of Active Directory, Group Policy, DNS/DHCP roles, Hyper-V, WSUS, file servers, and RDS. Comfortable deploying and administering server environments with growing confidence.</div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:72%;animation-delay:0.2s"></div></div>
+        <div class="skill-bar-label">Proficient</div>
+      </div>
+    </div>
+
+    <div class="skill-row">
+      <div class="skill-num">03</div>
+      <div class="skill-name-block">
+        <strong>Networking</strong>
+        <span>LAN · WAN · Wireless</span>
+      </div>
+      <div class="skill-desc">Solid foundational knowledge across switch configuration, VLANs, firewall rules, VPNs, and wireless infrastructure. Continuing to broaden hands-on experience with enterprise networking environments.</div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:52%;animation-delay:0.3s"></div></div>
+        <div class="skill-bar-label">Developing</div>
+      </div>
+    </div>
+
+    <div class="skill-row">
+      <div class="skill-num">04</div>
+      <div class="skill-name-block">
+        <strong>DNS</strong>
+        <span>Resolution & Management</span>
+      </div>
+      <div class="skill-desc">Competent in DNS zone management, A/CNAME/MX/TXT record configuration, TTL tuning, split-brain DNS, and public domain hosting. Reliable at diagnosing and resolving resolution issues across environments.</div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:72%;animation-delay:0.4s"></div></div>
+        <div class="skill-bar-label">Proficient</div>
+      </div>
+    </div>
+
+    <div class="skill-row">
+      <div class="skill-num">05</div>
+      <div class="skill-name-block">
+        <strong>IT Support</strong>
+        <span>Helpdesk · End-User</span>
+      </div>
+      <div class="skill-desc">Hardware and software troubleshooting, ticketing and ITSM workflows, user onboarding/offboarding, peripheral management, and delivering calm support under pressure.</div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:95%;animation-delay:0.5s"></div></div>
+        <div class="skill-bar-label">Expert</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TOOLS -->
+<div id="tools">
+  <div class="tools-inner tools-single">
+    <div class="reveal">
+      <div class="section-label">02 — Toolkit</div>
+      <div class="tool-group-title">Tools & Platforms</div>
+      <div class="pill-grid">
+        <span class="pill">Microsoft 365</span>
+        <span class="pill">Azure</span>
+        <span class="pill">Intune / Endpoint</span>
+        <span class="pill">Active Directory</span>
+        <span class="pill">Hyper-V</span>
+        <span class="pill">Windows Server 2025</span>
+        <span class="pill">Group Policy</span>
+        <span class="pill">PowerShell</span>
+        <span class="pill">WSUS</span>
+        <span class="pill">DR / Backup Solutions</span>
+        <span class="pill">Remote Desktop / RDS</span>
+        <span class="pill">Teams Admin</span>
+        <span class="pill">Exchange Online</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-label">04 — Background</div>
+    <div class="about-heading">Who I Am</div>
+    <p class="about-text">
+      I'm an IT professional based in <strong>Christchurch, New Zealand</strong> with a hands-on approach to keeping infrastructure healthy and users productive. I thrive in environments where reliability isn't optional.
+    </p>
+    <p class="about-text">
+      My work spans the full IT stack — from physical networking and server rooms to cloud-hosted identities and Microsoft 365 tenants. I care about <strong>clean documentation, clear communication, and systems that don't wake anyone up at 3am.</strong>
+    </p>
+    <div class="about-quote">
+      "Great IT is invisible. The goal is infrastructure people trust without ever having to think about it."
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="section-label" style="margin-top:3.4rem">What I Bring</div>
+    <ul class="values-list">
+      <li><div><strong>Clear communicator</strong> — technical and non-technical alike</div></li>
+      <li><div><strong>Systematic thinker</strong> — root cause over band-aids</div></li>
+      <li><div><strong>Documentation-first</strong> — nothing left undocumented</div></li>
+      <li><div><strong>Calm under pressure</strong> — outages happen; panic doesn't help</div></li>
+      <li><div><strong>Continuous learner</strong> — always pushing toward the next cert</div></li>
+      <li><div><strong>Remote & on-site ready</strong> — based in Christchurch, available NZ-wide</div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-super reveal">04 — Get In Touch</div>
+    <div class="contact-heading reveal">Let's Talk<br>Infrastructure.</div>
+    <div id="contact-avail-note" class="unavailable reveal">● Currently not open to new roles</div>
+    <p id="contact-sub-text" class="contact-sub reveal"></p>
+
+    <div class="contact-grid reveal">
+      <!-- Contact Form -->
+      <div class="contact-form-wrap">
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label" for="cf-name">Name</label>
+            <input class="form-input" type="text" id="cf-name" placeholder="Your name">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="cf-company">Company</label>
+            <input class="form-input" type="text" id="cf-company" placeholder="Your organisation">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label" for="cf-email">Email</label>
+            <input class="form-input" type="email" id="cf-email" placeholder="you@example.com">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="cf-phone">Phone <span style="opacity:0.5;font-size:0.6rem;">(optional)</span></label>
+            <input class="form-input" type="tel" id="cf-phone" placeholder="+64 xx xxx xxxx">
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="cf-message">Message</label>
+          <textarea class="form-input form-textarea" id="cf-message" placeholder="What would you like to discuss?"></textarea>
+        </div>
+        <button class="btn btn-form-submit" onclick="submitForm()">Send Message →</button>
+        <div id="form-feedback" class="form-feedback"></div>
+      </div>
+
+      <!-- Side info -->
+      <div class="contact-side">
+        <div class="contact-side-block">
+          <div class="form-label">LinkedIn</div>
+          <div class="linkedin-mark-wrap">
+            <a href="https://www.linkedin.com/in/benjamin-halba-0bb611321" target="_blank" rel="noopener" class="linkedin-mark" title="View LinkedIn Profile">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- i dot -->
+                <rect x="5" y="5" width="5" height="5" rx="1" fill="#e07b1a"/>
+                <!-- i stem -->
+                <rect x="5" y="12" width="5" height="11" rx="1" fill="rgba(245,240,232,0.75)"/>
+                <!-- n left stem -->
+                <rect x="13" y="12" width="4.5" height="11" rx="1" fill="rgba(245,240,232,0.75)"/>
+                <!-- n arch -->
+                <path d="M17.5 15.5 C17.5 13.5 19 12 21 12 C23 12 24.5 13.5 24.5 15.5 L24.5 23 L20.5 23 L20.5 16.5 C20.5 15.8 20 15.2 19.3 15.2 C18.6 15.2 17.5 15.8 17.5 16.5 Z" fill="rgba(245,240,232,0.75)"/>
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/benjamin-halba-0bb611321" target="_blank" rel="noopener" class="linkedin-mark-text" style="text-decoration:none;">
+              <strong>Benjamin Halba</strong>
+              <span>View profile →</span>
+            </a>
+          </div>
+        </div>
+        <div class="contact-side-block">
+          <div class="form-label">Location</div>
+          <span class="contact-side-val">Christchurch, New Zealand</span>
+        </div>
+        <div class="contact-side-block">
+          <div class="form-label">Availability</div>
+          <span class="contact-side-val" id="contact-side-avail"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Benjamin Halba · benhalba.org</span>
+  <span id="footer-status">Status: Not available for work</span>
+</footer>
+
+
+
+
+<script>
+  // ─────────────────────────────────────────────
+  //  THEME — light / dark / system
+  //  Saved to localStorage, persists across visits
+  // ─────────────────────────────────────────────
+  const THEMES = ['light', 'system', 'dark'];
+
+  function getSystemTheme() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme) {
+    const resolved = theme === 'system' ? getSystemTheme() : theme;
+    document.documentElement.setAttribute('data-theme', resolved);
+    // Mark active button
+    THEMES.forEach(t => {
+      const btn = document.getElementById('btn-' + t);
+      if (btn) btn.classList.toggle('active', t === theme);
+    });
+  }
+
+  function setTheme(theme) {
+    localStorage.setItem('bh-theme', theme);
+    applyTheme(theme);
+  }
+
+  // On load — restore saved preference, default to system
+  const savedTheme = localStorage.getItem('bh-theme') || 'system';
+  applyTheme(savedTheme);
+
+  // Reapply if system preference changes while on page
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if ((localStorage.getItem('bh-theme') || 'system') === 'system') applyTheme('system');
+  });
+
+  // ─────────────────────────────────────────────
+  //  CONFIG — edit these values as needed
+  //  true  = open to work / false = not available
+  // ─────────────────────────────────────────────
+  const AVAILABLE_FOR_WORK = false;
+  // ─────────────────────────────────────────────
+
+  const badge           = document.getElementById('avail-badge');
+  const badgeText       = document.getElementById('avail-text');
+  const heroVal         = document.getElementById('hero-status-val');
+  const contactNote     = document.getElementById('contact-avail-note');
+  const contactSubText  = document.getElementById('contact-sub-text');
+  const contactSideAvail= document.getElementById('contact-side-avail');
+  const footerStatus    = document.getElementById('footer-status');
+
+  if (AVAILABLE_FOR_WORK) {
+    badge.className = 'available';
+    badgeText.textContent = 'Available for Work';
+    heroVal.style.color = 'var(--green-status)';
+    heroVal.textContent = '● Available for Work';
+    contactNote.className = 'available reveal in';
+    contactNote.textContent = '● Open to new roles and opportunities';
+    contactSubText.textContent = 'I\'m currently open to new opportunities. Whether you have a role in mind or just want to connect, I\'d love to hear from you.';
+    contactSideAvail.textContent = 'Open to new roles';
+    contactSideAvail.style.color = '#5abe85';
+    footerStatus.textContent = 'Status: Available for work';
+  } else {
+    badge.className = 'unavailable';
+    badgeText.textContent = 'Not Available';
+    heroVal.style.color = 'var(--red)';
+    heroVal.textContent = '● Not Available';
+    contactNote.className = 'unavailable reveal in';
+    contactNote.textContent = '● Currently not open to new roles';
+    contactSubText.textContent = 'I\'m not actively seeking new roles at this time, but I\'m always happy to connect. Feel free to get in touch for a conversation — you\'re welcome to reach out.';
+    contactSideAvail.textContent = 'Not currently seeking roles';
+    contactSideAvail.style.color = '#e07070';
+    footerStatus.textContent = 'Status: Not available for work';
+  }
+
+  // Contact form
+  async function submitForm() {
+    const name     = document.getElementById('cf-name').value.trim();
+    const company  = document.getElementById('cf-company').value.trim();
+    const email    = document.getElementById('cf-email').value.trim();
+    const phone    = document.getElementById('cf-phone').value.trim();
+    const message  = document.getElementById('cf-message').value.trim();
+    const feedback = document.getElementById('form-feedback');
+    const btn      = document.querySelector('.btn-form-submit');
+
+    if (!name || !email || !message) {
+      feedback.textContent = '→ Please fill in your name, email, and a message.';
+      feedback.className = 'form-feedback error';
+      return;
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  Paste your Cloudflare Worker URL here once deployed:
+    const WORKER_URL = 'email-notifications.benjaminhalba.workers.dev';
+    // ─────────────────────────────────────────────────────
+
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    feedback.textContent = '';
+    feedback.className = 'form-feedback';
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, company, email, phone, message })
+      });
+
+      if (res.ok) {
+        feedback.textContent = '✓ Message sent — thank you, I\'ll be in touch shortly.';
+        feedback.className = 'form-feedback success';
+        document.getElementById('cf-name').value = '';
+        document.getElementById('cf-company').value = '';
+        document.getElementById('cf-email').value = '';
+        document.getElementById('cf-phone').value = '';
+        document.getElementById('cf-message').value = '';
+      } else {
+        throw new Error('Non-OK response');
+      }
+    } catch {
+      feedback.textContent = '→ Something went wrong — please reach out via LinkedIn instead.';
+      feedback.className = 'form-feedback error';
+    } finally {
+      btn.textContent = 'Send Message →';
+      btn.disabled = false;
+    }
+  }
+
+  // ── H1 SCROLL ANIMATION ──
+  const heroH1 = document.getElementById('hero-h1');
+  const h1Observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        // Reset so animation replays each time it enters view
+        heroH1.classList.remove('animated');
+        void heroH1.offsetWidth; // force reflow
+        heroH1.classList.add('animated');
+      }
+    });
+  }, { threshold: 0.4 });
+  h1Observer.observe(heroH1);
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
