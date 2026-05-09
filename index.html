@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Benjamin Halba · IT Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1123,6 +1124,11 @@ html[data-theme="dark"] h1 .stroke {
           <label class="form-label" for="cf-message">Message</label>
           <textarea class="form-input form-textarea" id="cf-message" placeholder="What would you like to discuss?"></textarea>
         </div>
+        <div class="cf-turnstile"
+          data-sitekey="0x4AAAAAADMLz3CP7otug3uM"
+          data-theme="auto"
+          data-size="flexible">
+        </div>
         <button class="btn btn-form-submit" onclick="submitForm()">Send Message →</button>
         <div id="form-feedback" class="form-feedback"></div>
       </div>
@@ -1263,8 +1269,16 @@ html[data-theme="dark"] h1 .stroke {
 
     // ─────────────────────────────────────────────────────
     //  Paste your Cloudflare Worker URL here once deployed:
-    const WORKER_URL = 'https://email-notifications.benjaminhalba.workers.dev';
+    const WORKER_URL = 'https://your-worker.your-subdomain.workers.dev';
     // ─────────────────────────────────────────────────────
+
+    // Grab Turnstile token
+    const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value || '';
+    if (!turnstileToken) {
+      feedback.textContent = '→ Please complete the security check.';
+      feedback.className = 'form-feedback error';
+      return;
+    }
 
     btn.textContent = 'Sending…';
     btn.disabled = true;
@@ -1275,7 +1289,7 @@ html[data-theme="dark"] h1 .stroke {
       const res = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, company, email, phone, message })
+        body: JSON.stringify({ name, company, email, phone, message, turnstileToken })
       });
 
       if (res.ok) {
@@ -1286,6 +1300,7 @@ html[data-theme="dark"] h1 .stroke {
         document.getElementById('cf-email').value = '';
         document.getElementById('cf-phone').value = '';
         document.getElementById('cf-message').value = '';
+        if (window.turnstile) window.turnstile.reset();
       } else {
         throw new Error('Non-OK response');
       }
